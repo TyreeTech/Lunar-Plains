@@ -5,12 +5,12 @@ using UnityEngine;
 //tag that requires the RectTransform
 [RequireComponent(typeof(RectTransform))]
 
-RectTransform myRT;
-RectTransform parentRT;
 
 
 public class LayoutAnchor : MonoBehaviour
 {
+  RectTransform myRT;
+  RectTransform parentRT;
 
     void Awake()
     {
@@ -43,7 +43,7 @@ public class LayoutAnchor : MonoBehaviour
 
         switch(anchor)
         {
-          case TextAnchor.MiddLeft:
+          case TextAnchor.MiddleLeft:
           case TextAnchor.MiddleCenter:
           case TextAnchor.MiddleRight:
               retValue.y += rt.rect.height * 0.5f;
@@ -62,18 +62,26 @@ public class LayoutAnchor : MonoBehaviour
     {
         Vector2 myOffset = GetPosition(myRT, myAnchor);
         Vector2 parentOffset = GetPosition(parentRT, parentAnchor);
-        Vector2 anchorCenter = new Vector2(Mathf.Lerp(myRT.anchorMin.x, myRT.anchorMax.x, myRT.pivot.x),
-      Mathf.Lerp(myRT.anchorMin.y, myRT.anchorMax.y, myRT.pivot.y));
-        Vector2 myAnchorOffset = new Vector2(parentRT.rect.width * anchorCenter.x,
-      parentRT.rect.height * anchorCenter.y);
-        Vector2 myPivotOffset = new Vector2(myRT.rect.width * myRT.pivot.x,
-      myRT.rect.height * myRT.pivot.y);
+        Vector2 anchorCenter = new Vector2(Mathf.Lerp(myRT.anchorMin.x, myRT.anchorMax.x, myRT.pivot.x), Mathf.Lerp(myRT.anchorMin.y, myRT.anchorMax.y, myRT.pivot.y));
+        Vector2 myAnchorOffset = new Vector2(parentRT.rect.width * anchorCenter.x, parentRT.rect.height * anchorCenter.y);
+        Vector2 myPivotOffset = new Vector2(myRT.rect.width * myRT.pivot.x, myRT.rect.height * myRT.pivot.y);
         Vector2 pos = parentOffset - myAnchorOffset - myOffset + myPivotOffset + offset;
         pos.x = Mathf.RoundToInt(pos.x);
-        pos.y = MAthf.RoundToInt(pos.y);
+        pos.y = Mathf.RoundToInt(pos.y);
 
         return pos;
     }
 
-    //FUTURE TYREE, NEXT IS SnapToAnchorPosi funciton!!!
+    public void SnapToAnchorPosition(TextAnchor myAnchor, TextAnchor parentAnchor, Vector2 offset)
+    {
+        myRT.anchoredPosition = AnchorPosition(myAnchor, parentAnchor, offset);
+
+    }
+
+    public Tweener MoveToAnchorPosition (TextAnchor myAnchor, TextAnchor parentAnchor, Vector2 offset)
+    {
+        return myRT.AnchorTo(AnchorPosition(myAnchor, parentAnchor, offset));
+    }
+
+    
 }
