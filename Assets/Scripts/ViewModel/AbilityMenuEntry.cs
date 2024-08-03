@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
@@ -9,7 +10,7 @@ public class AbilityMenuEntry : MonoBehaviour
   [SerializeField] Sprite normalSprite;
   [SerializeField] Sprite selectedSprite;
   [SerializeField] Sprite disabledSprite;
-  [SerializeField] Text label;
+  [SerializeField] TextMeshProUGUI label;
   Outline outline;
 
   void Awake()
